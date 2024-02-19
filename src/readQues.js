@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, get, child, update, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 
@@ -34,7 +34,7 @@ function extractDate(dateString) {
 }
 
 
-function extractBlogId(blogId){
+function extractBlogId(blogId) {
     const params = new URLSearchParams(window.location.search);
     return params.get(blogId);
 
@@ -139,17 +139,17 @@ function getData() {
 
             editor2.setContents(data.blogData.delta);
 
-            if(keys.length > 1){
+            if (keys.length > 1) {
                 const commentContainer = document.getElementById('commentContainer');
                 console.log(`round:`)
-                for(let i = 1; i < keys.length; i++){
+                for (let i = 1; i < keys.length; i++) {
                     let author = data[keys[i]].author;
                     let date = extractDate(data[keys[i]].date);
                     let commentContent = data[keys[i]].commentText;
 
 
-                    let newComment = createComment(author,commentContent, date);
-                    
+                    let newComment = createComment(author, commentContent, date);
+
                     console.log(`author: ${author}, date: ${date}, commentContent: ${commentContent}`);
                     commentContainer.append(newComment);
                 }
@@ -175,35 +175,46 @@ function writeNewPost() {
     const blogId = extractBlogId('blogId');
     // const blogId = "-NqrEo-ny2j5wO2anGPZ"
     const db = getDatabase();
-  
+
     // A post entry.
     const commentData = {
-      author: "username",
-      commentText: "body",
-      date: "title",
+        author: "username",
+        commentText: "body",
+        date: "title",
     };
-  
+
     // Get a key for a new Post.
     const newCommentKey = push(child(ref(database), `blog/${blogId}/comments`)).key;
-  
+
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates = {};
     updates[`blog/${blogId}/comments` + newCommentKey] = commentData;
-  
+
     return update(ref(db), updates);
-  }
+}
 
 
+const read = document.getElementById("read");
+const logout = document.getElementById("logout");
+const profile = document.getElementById("profile");
 
-//   const abc = writeNewPost();
-//   console.log("abc", abc);
+read.addEventListener('click', () => {
+    window.location.href = "showques.html"
+})
+
+logout.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        console.log("signed out")
+        window.location.href = "signin.html"
+    }).catch((error) => {
+        // An error happened.
+        console.log("con not sign out")
+    });
+    
+})
 
 
-
-// Example usage:
-// const commentContainer = document.getElementById('commentContainer');
-// const newComment = createComment('Russian Beauty', 'https://pics.craiyon.com/2023-06-12/3d5f09e2a8c244af9c1085c3e6f9de42.webp', 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus pariatur eum, amet excepturi fugiat quaerat cumque doloremque necessitatibus recusandae praesentium at ut, blanditiis, ipsam voluptas delectus illum voluptatem iste perspiciatis illo molestias voluptatum sequi rerum unde culpa. Distinctio dicta possimus error blanditiis omnis incidunt obcaecati quisquam, unde laudantium fuga accusamus amet vero, doloribus eius modi eaque vitae neque, voluptate a nobis inventore! Provident sint, ipsa eaque fugit vero, praesentium accusantium inventore dolores, tempora aperiam vel? Nulla, dolor consectetur iure ab optio at aut cumque tenetur porro amet. Cupiditate sed ad beatae id, voluptatibus modi aperiam molestiae unde porro quod nemo.', 'about 1 min ago');
-
-// commentContainer.appendChild(newComment);
-
-
+profile.addEventListener('click', () => {
+    window.location.href = "profile.html"
+})

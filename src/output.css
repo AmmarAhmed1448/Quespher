@@ -2078,6 +2078,24 @@ html {
   border-top-width: 4px;
 }
 
+.btn-lg {
+  height: 4rem;
+  min-height: 4rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.btn-wide {
+  width: 16rem;
+}
+
+.btn-square:where(.btn-lg) {
+  height: 4rem;
+  width: 4rem;
+  padding: 0px;
+}
+
 .btn-circle:where(.btn-xs) {
   height: 1.5rem;
   width: 1.5rem;
