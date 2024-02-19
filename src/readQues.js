@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getDatabase, ref, get, child, update, push } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
 
@@ -169,34 +169,50 @@ function getData() {
 getData();
 
 
+function writeComment() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userName = user.displayName;
+                const commentText = document.getElementById('commentTextArea').value;
+                const date = new Date().toDateString();
+                const blogId = extractBlogId('blogId');
 
-// author, commentText, date
-function writeNewPost() {
-    const blogId = extractBlogId('blogId');
-    // const blogId = "-NqrEo-ny2j5wO2anGPZ"
-    const db = getDatabase();
+                // A post entry.
+                const commentData = {
+                    author: userName,
+                    commentText: commentText,
+                    date: date,
+                };
 
-    // A post entry.
-    const commentData = {
-        author: "username",
-        commentText: "body",
-        date: "title",
-    };
+                // Get a key for a new Post.
+                const newCommentKey = push(child(ref(database), `blog/${blogId}/comments`)).key;
 
-    // Get a key for a new Post.
-    const newCommentKey = push(child(ref(database), `blog/${blogId}/comments`)).key;
+                // Write the new post's data simultaneously in the posts list and the user's post list.
+                const updates = {};
+                updates[`blog/${blogId}/comments` + newCommentKey] = commentData;
 
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    const updates = {};
-    updates[`blog/${blogId}/comments` + newCommentKey] = commentData;
-
-    return update(ref(db), updates);
+                update(ref(database), updates)
+                    .then(() => {
+                        resolve(commentData); // Resolve with the commentData
+                    })
+                    .catch((error) => {
+                        reject(error); // Reject if there's an error
+                    });
+            } else {
+                console.log("Sign in first");
+                reject(new Error("Sign in first")); // Reject with an error
+            }
+        });
+    });
 }
+
 
 
 const read = document.getElementById("read");
 const logout = document.getElementById("logout");
 const profile = document.getElementById("profile");
+const commentBtn = document.getElementById("commentBtn");
 
 read.addEventListener('click', () => {
     window.location.href = "showques.html"
@@ -209,12 +225,26 @@ logout.addEventListener('click', () => {
         window.location.href = "signin.html"
     }).catch((error) => {
         // An error happened.
-        console.log("con not sign out")
+        console.log("Failed to sign out")
     });
-    
+
 })
 
 
 profile.addEventListener('click', () => {
     window.location.href = "profile.html"
+})
+
+commentBtn.addEventListener('click', () => {
+    // const commentData = writeComment();
+    // console.log(commentData);
+    
+    writeComment()
+    .then((commentData) => {
+        console.log("commnet resolved")
+        createComment(commentData.author, commentData.commentText, commentData.date);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 })

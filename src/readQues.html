@@ -85,13 +85,16 @@
           <div class="label">
             <span class="label-text">Comment</span>
           </div>
-          <textarea id="commentWritten" class="textarea textarea-bordered h-24 resize-none" placeholder="Add your thoughts..."></textarea>
+          <textarea id="commentTextArea" class="textarea textarea-bordered h-24 resize-none" placeholder="Add your thoughts..."></textarea>
           <div class="label">
           </div>
         </label>
       </div>
 
-      <div id="commentContainer" class="w-3/4"></div>
+      <div id="commentContainer" class="w-3/4">
+        <button id="commentBtn" class="btn btn-active btn-primary">Comment</button>
+
+      </div>
 <!-- 
       <div id="commentContainer">
         <div class="comment w-3/4 my-10">
@@ -128,7 +131,6 @@
 
 
 
-    <button type="button" id="getData">Get Data</button>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script type="module" src="./readQues.js"></script>
   </body>
