@@ -49,7 +49,7 @@ function createComment(author, content, date) {
     // Create the user image element
     const userImage = document.createElement('img');
     userImage.classList.add('w-10', 'h-10', 'rounded-full');
-    userImage.src = 'https://pics.craiyon.com/2023-06-12/3d5f09e2a8c244af9c1085c3e6f9de42.webp';
+    userImage.src = 'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
     userImage.alt = 'User Image';
 
     // Create the user info container
