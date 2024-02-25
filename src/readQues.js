@@ -23,7 +23,12 @@ const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 const database = getDatabase(app);
 
-CC
+function extractDate(dateString) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const d = new Date(dateString);
+    const formattedDate = `${d.getDate() < 10 ? 0 : ""} ${d.getDate()}-${months[(d.getMonth())]}-${d.getFullYear()}`
+    return formattedDate;
+}
 
 
 function extractBlogId(blogId) {

@@ -55,7 +55,7 @@ function extractDate(dateString) {
 }
  
 
-function createCard(blogId, title, content, author, date) {
+function createCard(blogId, title, author, date) {
   // Create the card container
   const cardDiv = document.createElement('div');
   cardDiv.classList.add('w-3/4', 'my-10', 'p-5', 'border-2', 'border-slate-500', 'rounded-xl');
@@ -67,8 +67,8 @@ function createCard(blogId, title, content, author, date) {
   anchorElement.textContent = title;
 
   // Create the content element
-  const contentElement = document.createElement('p');
-  contentElement.textContent = content;
+  // const contentElement = document.createElement('p');
+  // contentElement.textContent = content;
 
   // Create the author and date container
   const authorDateDiv = document.createElement('div');
@@ -87,7 +87,7 @@ function createCard(blogId, title, content, author, date) {
   authorDateDiv.appendChild(dateElement);
   // cardDiv.appendChild(titleElement);
   cardDiv.appendChild(anchorElement);
-  cardDiv.appendChild(contentElement);
+  // cardDiv.appendChild(contentElement);
   cardDiv.appendChild(authorDateDiv);
 
   return cardDiv;
@@ -111,7 +111,7 @@ getRecords().then((res) => {
   for(const element in res){
     console.log(res[element]);
     console.log(res[element].blogData)
-    cardsContainer.appendChild((createCard(element, res[element].blogData.title, "This is dummy title", res[element].blogData.authorName, extractDate(res[element].blogData.date))))
+    cardsContainer.appendChild((createCard(element, res[element].blogData.title, res[element].blogData.authorName, extractDate(res[element].blogData.date))))
   }
 }).catch((error) => {
   console.log(error)

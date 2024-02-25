@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -25,54 +25,71 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
-const auth = getAuth(app)
+
+const auth = getAuth(app);
 
 
 
-// ****************************************************************
-
-//* Sign In Code 
-
-
-const signInBtn = document.getElementById('signInBtn');
-
-signInBtn.addEventListener('click', () => {
 
 
 
+
+// ***********************************************************
+// Sign Up Code
+
+
+const signUpBtn = document.getElementById('signUpBtn');
+
+signUpBtn.addEventListener('click', () => {
+
+
+
+  const userNameInputField = document.getElementById('userName');
   const emailInputfield = document.getElementById('email');
   const passwordInputfield = document.getElementById('password');
 
 
 
 
+  const userName  = userNameInputField.value;
   const email = emailInputfield.value;
   const password = passwordInputfield.value;
 
 
-//* Firebase Code
-signInWithEmailAndPassword(auth, email, password)
+
+
+// * Sign Up Firebase Code
+createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
-    // Signed in 
+    // Signed up
     const user = userCredential.user;
-    //! Remove this console log                                     !!!!!!!
-    console.log(user);
-    window.location.href = "WriteQues.html"
-    // ...
+    //! Remoce this console log                                     !!!!!
+    console.log(userCredential);
+    
+    updateProfile(user, {
+      displayName: userName
+    })
+
+  window.location.href = "showQues.html"; // Redirect to your sign-in page
+
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
     //! Remove this console log                                     !!!!!!!
+    console.log(errorMessage);
   });
-});
+})
 
 
 
-// ****************************************************************
 
-const signUp = document.getElementById("signUp");
-signUp.addEventListener('click', () => {
-  window.location.href = "SignUp.html"; // Redirect to your sign-in page
+// *****************************************************************
+
+
+
+const signIn = document.getElementById("signIn");
+signIn.addEventListener('click', () => {
+  window.location.href = "SignIn.html"; // Redirect to your sign-in page
 
 })

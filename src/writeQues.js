@@ -154,7 +154,7 @@ abc.innerHTML = delta2;
 
 })
 
-const logOut = document.getElementById('logOut')
+const logOut = document.getElementById('logout')
 
 logOut.addEventListener('click', () => {
   signOut(auth).then(() => {
